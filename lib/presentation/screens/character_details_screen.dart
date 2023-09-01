@@ -1,6 +1,10 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rick_and_morty/business_logic/characters_cubit/characters_cubit.dart';
+import 'package:rick_and_morty/data/models/character_location_model.dart';
 
-import '../../contants/my_colors.dart';
+import '../../constants/my_colors.dart';
 import '../../data/models/character_model.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
@@ -67,8 +71,56 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
+  Widget checkIfLocationIsLoaded(CharactersState state) {
+    if (state is LocationLoaded) {
+      return displyLocationOrEmptySpace(state);
+    } else {
+      return showProgressIndicator();
+    }
+  }
+
+  Widget showProgressIndicator() {
+    return const Center(
+      child: CircularProgressIndicator(
+        color: MyColors.kYellowColor,
+      ),
+    );
+  }
+
+  Widget displyLocationOrEmptySpace(state) {
+    var location = (state).location;
+    if (location != null) {
+      return Center(
+        child: DefaultTextStyle(
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 20,
+            color: MyColors.kWhiteColor,
+            shadows: [
+              Shadow(
+                blurRadius: 7,
+                color: MyColors.kYellowColor,
+                offset: Offset(0, 0),
+              ),
+            ],
+          ),
+          child: AnimatedTextKit(
+            repeatForever: true,
+            animatedTexts: [
+              WavyAnimatedText(location.name),
+              WavyAnimatedText(location.type),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<CharactersCubit>(context).getLocation("${character.id}");
     return Scaffold(
       backgroundColor: MyColors.kGreyColor,
       body: CustomScrollView(
@@ -100,8 +152,10 @@ class CharacterDetailsScreen extends StatelessWidget {
                       characterInfo(
                           title: "Location", value: character.location.name),
                       buildDivider(50),
-                      const SizedBox(
-                        height: 20,
+                      BlocBuilder<CharactersCubit, CharactersState>(
+                        builder: (context, state) {
+                          return checkIfLocationIsLoaded(state);
+                        },
                       ),
                     ],
                   ),

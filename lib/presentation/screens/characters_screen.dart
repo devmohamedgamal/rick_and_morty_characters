@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_and_morty/business_logic/cubit/characters_cubit.dart';
+import 'package:rick_and_morty/business_logic/characters_cubit/characters_cubit.dart';
 
-import '../../contants/my_colors.dart';
+import '../../constants/my_colors.dart';
 import '../../data/models/character_model.dart';
 import '../widgets/character_item.dart';
 

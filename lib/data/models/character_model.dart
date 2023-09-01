@@ -7,8 +7,8 @@ class CharacterModel {
   late String gander;
   late String name;
   late String image;
-  late CharacterLocation origin;
-  late CharacterLocation location;
+  late CharacterLocationOrigin origin;
+  late CharacterLocationOrigin location;
 
   CharacterModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
@@ -16,15 +16,15 @@ class CharacterModel {
     species = json["species"];
     type = json["type"];
     gander = json["gender"];
-    origin = CharacterLocation.fromJson(json["origin"]);
-    location = CharacterLocation.fromJson(json["location"]);
+    origin = CharacterLocationOrigin.fromJson(json["origin"]);
+    location = CharacterLocationOrigin.fromJson(json["location"]);
     name = json["name"];
     image = json["image"];
   }
 }
 
-class CharacterLocation {
-  CharacterLocation({
+class CharacterLocationOrigin {
+  CharacterLocationOrigin({
     required this.name,
     required this.url,
   });
@@ -32,8 +32,8 @@ class CharacterLocation {
   String name;
   String url;
 
-  factory CharacterLocation.fromJson(Map<String, dynamic> json) =>
-      CharacterLocation(
+  factory CharacterLocationOrigin.fromJson(Map<String, dynamic> json) =>
+      CharacterLocationOrigin(
         name: json["name"],
         url: json["url"],
       );

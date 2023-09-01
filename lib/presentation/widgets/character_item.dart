@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/data/models/character_model.dart';
 
-import '../../contants/my_colors.dart';
-import '../../contants/strings.dart';
+import '../../constants/my_colors.dart';
+import '../../constants/strings.dart';
 
 class CharacterItem extends StatelessWidget {
   final CharacterModel characterModel;
@@ -20,7 +20,7 @@ class CharacterItem extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, characterDetailsScreen,arguments: characterModel);
+          Navigator.pushNamed(context, characterDetailsScreen,arguments:characterModel);
         },
         child: GridTile(
           footer: Hero(

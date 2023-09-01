@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_and_morty/business_logic/cubit/characters_cubit.dart';
+import 'package:rick_and_morty/business_logic/characters_cubit/characters_cubit.dart';
+import 'package:rick_and_morty/data/models/character_location_model.dart';
 import 'package:rick_and_morty/data/web_services/characters_web_services.dart';
 
-import 'contants/strings.dart';
+import 'constants/strings.dart';
 import 'data/models/character_model.dart';
 import 'data/repository/character_repository.dart';
 import 'presentation/screens/character_details_screen.dart';
@@ -29,7 +30,13 @@ class AppRouter {
       case characterDetailsScreen:
         final character = settings.arguments as CharacterModel;
         return MaterialPageRoute(
-            builder: (_) => CharacterDetailsScreen(character: character,));
+          builder: (_) => BlocProvider(
+            create: (context) => CharactersCubit(characterRepository),
+            child: CharacterDetailsScreen(
+              character: character,
+            ),
+          ),
+        );
     }
   }
 }

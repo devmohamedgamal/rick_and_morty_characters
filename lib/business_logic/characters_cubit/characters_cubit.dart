@@ -1,7 +1,7 @@
- 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/data/repository/character_repository.dart';
 
+import '../../data/models/character_location_model.dart';
 import '../../data/models/character_model.dart';
 
 part 'characters_state.dart';
@@ -17,5 +17,13 @@ class CharactersCubit extends Cubit<CharactersState> {
       this.characters = characters;
     });
     return characters;
+  }
+
+  void getLocation(String id) {
+    characterRepository.getLocation(id).then(
+      (location) {
+        emit(LocationLoaded(location));
+      },
+    );
   }
 }

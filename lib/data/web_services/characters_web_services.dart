@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:rick_and_morty/contants/strings.dart';
+import 'package:rick_and_morty/constants/strings.dart';
 
 class CharactersWebServices {
   late Dio dio;
@@ -17,17 +17,23 @@ class CharactersWebServices {
   }
 
   Future<List<dynamic>> fetchAllCaracters() async {
-    // Uri url = Uri.parse("$baseUrl/$endPointCharacters");
     try {
-      // http.Response response = await http.get(url);
-      // Map<String, dynamic> jsonData = jsonDecode(response.body);
-      // CharacterModel characterModel = CharacterModel.fromJson(jsonData['results']);
-      // return characterModel;
       Response response = await dio.get(endPointCharacters);
       return response.data['results'];
     } catch (e) {
       log(" api error ${e.toString()}");
       return [];
+    }
+  }
+
+  Future<Map<String,dynamic>> fetchLocation(String id) async {
+    try {
+      Response response = await dio.get("$endPointLocation/$id");
+      log(response.data.toString());
+      return response.data;
+    } catch (e) {
+      log(" api error ${e.toString()}");
+      return {};
     }
   }
 }

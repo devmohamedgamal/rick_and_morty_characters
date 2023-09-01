@@ -9,3 +9,9 @@ final class CharactersLoaded extends CharactersState {
 
   CharactersLoaded(this.characters);
 }
+
+final class LocationLoaded extends CharactersState {
+  final LocationModel location;
+
+  LocationLoaded(this.location);
+}
