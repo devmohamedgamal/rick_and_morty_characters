@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:rick_and_morty/business_logic/characters_cubit/characters_cubit.dart';
 
 import '../../constants/my_colors.dart';
@@ -28,7 +29,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
         hintText: "Find a characters ..",
         border: InputBorder.none,
         hintStyle: TextStyle(color: MyColors.kGreyColor, fontSize: 18),
-        ),
+      ),
       style: const TextStyle(color: MyColors.kGreyColor, fontSize: 18),
       onChanged: (searchedCharacter) {
         addSearchedForItemsToSearchedList(searchedCharacter);
@@ -160,16 +161,57 @@ class _CharactersScreenState extends State<CharactersScreen> {
     );
   }
 
+  Widget buildOfflineInternetWidget() {
+    return Center(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.width * 0.2,
+            ),
+            const Text(
+              'Can\'t connect ... check internet',
+              style: TextStyle(
+                fontSize: 22,
+                color: MyColors.kGreyColor,
+              ),
+            ),
+            Image.asset("assets/images/offline.png"),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColors.kYellowColor,
         title: _isSearching ? _buildSearchField() : _buildAppBarTitle(),
-        leading: _isSearching ? const BackButton(color: MyColors.kGreyColor,) : Container(),
+        leading: _isSearching
+            ? const BackButton(
+                color: MyColors.kGreyColor,
+              )
+            : Container(),
         actions: _buildAppbarActions(),
       ),
-      body: buildBlocWidget(),
+      body: OfflineBuilder(
+        connectivityBuilder: (
+          BuildContext context,
+          ConnectivityResult connectivity,
+          Widget child,
+        ) {
+          final bool connected = connectivity != ConnectivityResult.none;
+          if (connected) {
+            return buildBlocWidget();
+          } else {
+            return buildOfflineInternetWidget();
+          }
+        },
+        child: showLoadingIndicator(),
+      ),
     );
   }
 }

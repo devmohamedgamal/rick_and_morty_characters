@@ -152,9 +152,12 @@ class CharacterDetailsScreen extends StatelessWidget {
                       characterInfo(
                           title: "Location", value: character.location.name),
                       buildDivider(50),
+                      const SizedBox(
+                        height: 30,
+                      ),
                       BlocBuilder<CharactersCubit, CharactersState>(
                         builder: (context, state) {
-                          return checkIfLocationIsLoaded(state);
+                          return checkIfLocationIsLoaded(state); 
                         },
                       ),
                     ],
